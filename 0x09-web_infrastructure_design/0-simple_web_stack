@@ -1,0 +1,32 @@
+# Diagram Screenshot
+
+Link: https://imgur.com/FsUKVpN
+
+# Explanation
+
+## Infrastructure Overview
+
+A user opens a browser and types `www.foobar.com`. The browser performs a DNS lookup to resolve the domain name, and the DNS A record returns the IP address `8.8.8.8`, which points to our server.
+
+The user’s request goes to:
+
+- Web Server (Nginx): Receives HTTP requests and forwards them to the application server.
+- Application Server (e.g., Gunicorn or PHP-FPM): Processes the business logic of the website using code stored in application files.
+- Database (MySQL): Stores persistent data like users, posts, or products.
+
+## Components
+
+- Server: A computer (virtual or physical) that runs the web stack. It is accessible at IP `8.8.8.8`.
+- Domain Name (`www.foobar.com`): A human-readable address pointing to the server's IP via DNS.
+- DNS Record: The `www` subdomain uses an A record to resolve to `8.8.8.8`.
+- Web Server (Nginx): Handles incoming HTTP requests and routes them appropriately.
+- Application Server: Executes code logic, connects to the database, and generates dynamic content.
+- Database (MySQL): Stores structured information for the website.
+- Communication Protocol: The server and the user's computer communicate over HTTP (TCP/IP).
+
+## Infrastructure Limitations
+
+- Single Point of Failure (SPOF): One server handles everything. If it fails, the whole website goes down.
+- Downtime for Maintenance: Restarting the web or application server causes temporary downtime.
+- No Scalability: Increased traffic can overload the server since there's no load balancing or redundancy.
+
