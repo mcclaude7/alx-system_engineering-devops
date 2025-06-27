@@ -1,0 +1,46 @@
+# Diagram Screenshot
+
+-Link: https://imgur.com/a/IBJSmjh
+
+## Explanation
+
+### 🔁 User Request Flow
+
+1. The user opens a browser and types `www.foobar.com`.
+2. DNS resolves the domain name to an IP address (e.g., `192.0.2.2.1`) using an A record.
+3. The request reaches the **Load Balancer (HAProxy).
+4. The load balancer distributes traffic between:
+   - A Web Server (Nginx) that serves static content and forwards dynamic requests.
+   - An Application Server that runs the backend application code.
+5. The application server interacts with a Primary MySQL Database.
+6. A Replica MySQL Database synchronizes with the Primary and handles read-only queries.
+
+### 🧱 Infrastructure Components
+
+- Load Balancer: Distributes traffic among servers for availability and load management. |
+- Web Server (Nginx): Handles HTTP requests and serves static files.                          |
+- Application Server: Runs application logic (codebase).                                      |
+- Primary DB (MySQL): Handles read/write operations.                                          |
+- Replica DB (MySQL): Handles read-only operations to reduce load on the primary database.    |
+
+### oad Balancer Details
+
+- Type: HAProxy
+- Algorithm: `Round Robin` each request is forwarded to the next available server in rotation.
+- Setup: Active-Active
+  - All backend servers are live and share traffic.
+  - Contrast with Active-Passive, where one server is idle until failover occurs.
+
+### rimary-Replica Database Cluster
+
+- Primary Node: Accepts write and read operations. Sends updates to replica.
+- Replica Node: Only handles read queries. Cannot modify data directly.
+- Use Case: Improves performance by offloading read-heavy operations from the primary.
+
+### Issues with This Infrastruucture                                                               |
+
+- SPOF: The load balancer and the primary database are single points of failure.
+- Security: No HTTPS or firewalls. Vulnerable to attacks and data interception.     
+- Monitoring: No system to monitor performance, errors, or system health.             
+
+
