@@ -1,0 +1,69 @@
+#Diagram Screenshot
+
+Link to diagram:  https://imgur.com/a/ZV1WeBo
+
+## Infrastructure Design Overview
+
+This setup describes a secure, encrypted, and monitored web infrastructure that hosts the website 'www.foobar.com'.
+
+### Infrastructure Components
+
+- 3 Firewalls:
+  - Firewall 1: Between Internet and Load Balancer
+  - Firewall 2: Between Load Balancer and Web/Application Servers
+  - Firewall 3: Between App Servers and Database
+
+- 1 SSL Certificate:
+  - Installed on the Load Balancer to serve traffic securely over HTTPS
+
+- 3 Monitoring Clients:
+  - Installed on each server
+  - Tools like Sumologic, Datadog, or Prometheus to collect logs, metrics, and monitor uptime
+
+## Purpose of Each Component
+
+### Firewalls
+- Block unauthorized traffic
+- Protects public and internal services
+- Enforces strict access control between layers
+
+### HTTPS / SSL Certificate
+- Encrypts data in transit between client and server
+- Builds trust (via SSL certificate validation)
+- Prevents man-in-the-middle attacks
+
+### Monitoring Tools
+- Track server health (CPU, memory, disk)
+- Collect logs and metrics
+- Provide alerting for downtime or anomalies
+
+### Monitoring QPS (Queries per Second)
+
+- Track requests in real time via:
+  - Web server logs
+  - Custom scripts with `awk` or `grep`
+  - Dashboards in Datadog or Sumologic
+
+## nfrastructure Risks & Considerations
+
+### 1.SSL Termination at Load Balancer
+
+- Issue: Data between LB and App Servers is unencrypted
+- Fix: Use end-to-end encryption** (SSL from LB to backend)
+
+### 2.Single MySQL Write Server
+
+- Issue: Single point of failure for database writes
+- Fix: Use MySQL Replication or Multi-master clustering
+
+### 3.Identical Servers (Web + App + DB)
+
+- Issue: Poor scalability and isolation
+- Fix: Separate roles — use dedicated Web, App, and DB servers
+
+## Final Notes
+
+- This setup ensures:
+  - Security with firewalls and HTTPS
+  - Observability via monitoring agents
+  - Scalability awareness** through separation of concerns
