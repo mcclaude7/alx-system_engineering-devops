@@ -1,0 +1,46 @@
+# Advanced Infrastructure
+
+## Diagram URL: 
+
+https://imgur.com/a/t15EtdD
+
+## Concept Overview
+
+To scale the infrastructure, we split responsibilities across multiple dedicated servers and cluster our load balancers. This makes the system more resilient, secure, and scalable.
+
+## Components Added
+
+- 1 additional server: Supports distributed infrastructure by hosting a separate role.
+- HAProxy in cluster mode: Provides load balancer redundancy (high availability).
+- Dedicated Web Server: Serves static content; isolates HTTP handling from application logic.
+- Dedicated App Server: Executes application logic without web or DB interference.
+- Dedicated Database Server: Isolates data storage, optimizes performance and security.
+
+
+##Why Each Component Was Added
+
+- Additional Server: Splitting roles improves maintainability, performance, and allows horizontal scaling.
+- Clustered Load Balancers (HAProxy):
+  - Prevents a single point of failure.
+  - Ensures high availability and uninterrupted access.
+- Web Server:
+  - Handles HTTP/S requests and static content.
+  - Reduces load on the application server.
+- Application Server:
+  - Processes dynamic business logic independently.
+  - Increases modularity and simplifies scaling backend logic.
+- Dedicated Database:
+  - Centralizes and secures data.
+  - Prevents I/O contention from app or web services.
+
+## 🧠 App Server vs Web Server
+
+| Web Server (Nginx)             | Application Server                |
+|--------------------------------|-----------------------------------|
+| Handles HTTP/HTTPS traffic     | Executes backend code             |
+| Serves static files (HTML/CSS) | Runs business logic (Python, PHP) |
+| Acts as reverse proxy          | Communicates with DB              |
+| Doesn't connect to database    | Often connects to DB              |
+
+
+
