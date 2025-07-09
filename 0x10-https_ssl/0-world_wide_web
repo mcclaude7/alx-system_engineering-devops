@@ -1,0 +1,27 @@
+#!/usr/bin/env bash
+# This script audits DNS A records for specified subdomains of a domain
+
+# Function to fetch DNS info for a subdomain
+get_record_info() {
+    local sub=$1
+    local dom=$2
+    result=$(dig ${sub}.${dom} +short)
+
+    if [[ -n "$result" ]]; then
+        echo "The subdomain ${sub} is a A record and points to ${result}"
+    else
+        echo "The subdomain ${sub} does not exist or has no A record"
+    fi
+}
+
+# Main execution
+domain=$1
+subdomain=$2
+
+if [[ -z "$subdomain" ]]; then
+    for sub in www lb-01 web-01 web-02; do
+        get_record_info $sub $domain
+    done
+else
+    get_record_info $subdomain $domain
+fi
